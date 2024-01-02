@@ -1,6 +1,6 @@
 const express = require("express");
 const route = express.Router();
-const libro = require("../models/libro");
+const {libro, validateLibro} = require("../models/libro");
 const {requiredScopes} = require("express-oauth2-jwt-bearer");
 
 function validateLengthId(length, mensaje) {// funcion para verificar que el largo del id sea el correcto
@@ -41,9 +41,15 @@ route.get("/:id", requiredScopes("read:estudiantes"), async (req, res, next) => 
 //agregar un libro
 route.post("/", requiredScopes("write:productos"), async (req, res, next) => {
     try {
+        const result = validateLibro(req.body);
+        if(result.error){
+            const error = new Error(result.error.message);
+            error.status = 400;
+            throw error;
+        }
         const nuevoLibro = new libro(req.body);
         await nuevoLibro.save();
-        res.status(201).json(nuevoLibro);
+        res.status(201).json({message: "Libro Agregado"});
     } catch (error) {
         next(error);
     }
