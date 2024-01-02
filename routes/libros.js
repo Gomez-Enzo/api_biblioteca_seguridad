@@ -1,6 +1,7 @@
 const express = require("express");
 const route = express.Router();
 const libro = require("../models/libro");
+const {requiredScopes} = require("express-oauth2-jwt-bearer");
 
 function validateLengthId(length, mensaje) {// funcion para verificar que el largo del id sea el correcto
     if(length != 24){
@@ -11,7 +12,7 @@ function validateLengthId(length, mensaje) {// funcion para verificar que el lar
 }
 
 //obtener lista de libros
-route.get("/", async (req, res, next) => {
+route.get("/", requiredScopes("read:productos"), async (req, res, next) => {
     try {
         const libros = await libro.find();
         res.json(libros);
@@ -21,7 +22,7 @@ route.get("/", async (req, res, next) => {
 });
 
 //obtener un Libro
-route.get("/:id", async (req, res, next) => {
+route.get("/:id", requiredScopes("read:estudiantes"), async (req, res, next) => {
     try {
         const  libroId = req.params.id;
         validateLengthId(libroId.length, 'El largo del id ingresado es incorrecto');
@@ -38,7 +39,7 @@ route.get("/:id", async (req, res, next) => {
 });
 
 //agregar un libro
-route.post("/", async (req, res, next) => {
+route.post("/", requiredScopes("write:productos"), async (req, res, next) => {
     try {
         const nuevoLibro = new libro(req.body);
         await nuevoLibro.save();
@@ -49,7 +50,7 @@ route.post("/", async (req, res, next) => {
 });
 
 //modificar caracteristica de libro
-route.put("/:id", async (req, res, next) => {
+route.put("/:id", requiredScopes("write:productos"), async (req, res, next) => {
     try {
         const libroId = req.params.id;
         validateLengthId(libroId.length, 'El largo del id ingresado es incorrecto');
@@ -68,7 +69,7 @@ route.put("/:id", async (req, res, next) => {
 });
 
 //borrar un libro
-route.delete("/:id", async (req, res, next) =>{
+route.delete("/:id", requiredScopes("write:productos"), async (req, res, next) =>{
     try {
         const libroId = req.params.id;
         validateLengthId(libroId.length, 'El largo del id ingresado es incorrecto');
