@@ -47,7 +47,7 @@ route.post("/", requiredScopes("write:productos"), async (req, res, next) => {
             error.status = 400;
             throw error;
         }
-        const nuevoLibro = new libro(req.body);
+        const nuevoLibro = new libro(result.value);
         await nuevoLibro.save();
         res.status(201).json({message: "Libro Agregado"});
     } catch (error) {
@@ -59,7 +59,16 @@ route.post("/", requiredScopes("write:productos"), async (req, res, next) => {
 route.put("/:id", requiredScopes("write:productos"), async (req, res, next) => {
     try {
         const libroId = req.params.id;
+
         validateLengthId(libroId.length, 'El largo del id ingresado es incorrecto');
+
+        const result =  validateLibro(req.body);
+        if(result.error){
+            const error = new Error(result.error.message);
+            error.status = 400;
+            throw error;
+        }
+
         const libroUpdate = await libro.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
         });
@@ -68,6 +77,7 @@ route.put("/:id", requiredScopes("write:productos"), async (req, res, next) => {
             error.status = 404;
             throw error;
         }
+
         res.json(libroUpdate);
     } catch (error) {
         next(error);

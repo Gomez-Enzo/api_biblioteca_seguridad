@@ -13,10 +13,10 @@ const libroShema = new mongoose.Schema({
 
 const libro = mongoose.model('libros', libroShema);
 
-const validateLibro = (libros) => {
+const  validateLibro = (libros) => {
     const schema = Joi.object({
-        titulo: Joi.string().max(15).default("Name Book"),
-        autor: Joi.string().max(15).default("Name Author"),
+        titulo: Joi.string().max(15).default("Book Name"),
+        autor: Joi.string().max(15).default("Author Name"),
     });
 
     return schema.validate(libros);
