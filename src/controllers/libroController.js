@@ -1,12 +1,12 @@
 const {libro, validateLibro} = require("../models/libro");
 const validateLengthId = require('../utils/validateLengthId');
 
-exports.getAllLibros =  async (req, res, next) => {
+exports.getAllLibros =  async (req, res) => {
     try {
         const libros = await libro.find();
-        res.json(libros);
+        res.status(200).json(libros);
     } catch (error) {
-        next(error);
+        res.status(500).json({ error: "Error al obtener los libros" });
     }
 };
 

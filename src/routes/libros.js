@@ -4,18 +4,18 @@ const { getAllLibros, getLibroById, createLibro, updateLibro, deleteLibro } = re
 const route = express.Router();
 
 //obtener lista de libros
-route.get("/", requiredScopes("read:productos"),getAllLibros);
+route.get("/", requiredScopes("read:libros"),getAllLibros);
 
 //obtener un Libro
-route.get("/:id", requiredScopes("read:estudiantes"), getLibroById);
+route.get("/:id", requiredScopes("read:libros"), getLibroById);
 
 //agregar un libro
-route.post("/", requiredScopes("write:productos"), createLibro);
+route.post("/", requiredScopes("write:libros"), createLibro);
 
 //modificar caracteristica de libro
-route.put("/:id", requiredScopes("write:productos"), updateLibro);
+route.put("/:id", requiredScopes("write:libros"), updateLibro);
 
 //borrar un libro
-route.delete("/:id", requiredScopes("write:productos"), deleteLibro);
+route.delete("/:id", requiredScopes("write:libros"), deleteLibro);
 
 module.exports = route;
