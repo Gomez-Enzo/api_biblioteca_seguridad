@@ -59,6 +59,10 @@ exports.deleteLibro = async (req, res) =>{
         const libroId = req.params.id;
 
         const libroDetele = await libro.findByIdAndDelete(libroId);
+        if (!libroDetele) {
+            res.status(404).json({error: 'Libro no encontrado'});
+        }
+
         res.status(200).json(libroDetele);
     } catch (error) {
         res.status(500).json({error: 'Error al eliminar el libro'});
