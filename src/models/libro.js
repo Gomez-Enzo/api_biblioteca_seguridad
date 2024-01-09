@@ -14,10 +14,16 @@ const libroShema = new mongoose.Schema({
 const libro = mongoose.model('libros', libroShema);
 
 
-const schema = Joi.object({
+const schemaPost = Joi.object({
     id: Joi.string(),
     titulo: Joi.string().max(15).required(),
     autor: Joi.string().max(15).required(),
 });
 
-module.exports = {libro, schema};
+const schemaPut = Joi.object({
+    id: Joi.string(),
+    titulo: Joi.string().max(15),
+    autor: Joi.string().max(15),
+});
+
+module.exports = {libro, schemaPost, schemaPut,};

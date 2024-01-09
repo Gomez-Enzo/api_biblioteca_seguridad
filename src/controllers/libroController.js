@@ -1,4 +1,4 @@
-const {libro, validateLibro} = require("../models/libro");
+const {libro} = require("../models/libro");
 
 exports.getAllLibros =  async (req, res) => {
     try {
@@ -15,7 +15,7 @@ exports.getLibroById = async (req, res) => {
         const oneLibro = await libro.findById(libroId);
 
         if (!oneLibro) {
-            res.status(404).json({error: 'Libro no encontrado'})
+            return res.status(404).json({error: 'Libro no encontrado'})
         }
 
         res.status(200).json(oneLibro);
@@ -45,7 +45,7 @@ exports.updateLibro = async (req, res) => {
             new: true,
         });
         if (!libroUpdate) {
-            res.status(404).json({error: 'Libro no encontrado'});
+            return res.status(404).json({error: 'Libro no encontrado'});
         }
 
         res.status(200).json(libroUpdate);
@@ -60,7 +60,7 @@ exports.deleteLibro = async (req, res) =>{
 
         const libroDetele = await libro.findByIdAndDelete(libroId);
         if (!libroDetele) {
-            res.status(404).json({error: 'Libro no encontrado'});
+            return res.status(404).json({error: 'Libro no encontrado'});
         }
 
         res.status(200).json(libroDetele);
